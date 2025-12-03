@@ -1,70 +1,68 @@
 {
-    "app-id" : "io.github.kaii_lb.hgui",
-    "runtime" : "org.gnome.Platform",
-    "runtime-version" : "45",
-    "sdk" : "org.gnome.Sdk",
-    "sdk-extensions" : [
-        "org.freedesktop.Sdk.Extension.rust-stable",
-        "org.freedesktop.Sdk.Extension.llvm16"
+  "app-id": "io.github.kaii_lb.hgui",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "48",
+  "sdk": "org.gnome.Sdk",
+  "sdk-extensions": [
+    "org.freedesktop.Sdk.Extension.rust-stable"
+  ],
+  "command": "hgui-rust",
+  "finish-args": [
+    "--share=ipc",
+    "--socket=fallback-x11",
+    "--device=dri",
+    "--socket=wayland"
+  ],
+  "build-options": {
+    "append-path": "/usr/lib/sdk/rust-stable/bin",
+    "build-args": [
+      "--share=network"
     ],
-    "command" : "hgui-rust",
-    "finish-args" : [
-        "--share=ipc",
-        "--socket=fallback-x11",
-        "--device=dri",
-        "--socket=wayland"
-
-    ],
-    "build-options" : {
-        "append-path": "/usr/lib/sdk/rust-stable/bin:/usr/lib/sdk/llvm16/bin",
-        "env" : {
-            "RUST_BACKTRACE" : "1",
-            "RUST_LOG" : "hgui-rust=debug",
-            "CARGO_HOME" : "/run/build/hgui-rust/cargo",
-            "CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER": "clang",
-            "CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS": "-C link-arg=-fuse-ld=/usr/lib/sdk/rust-stable/bin/mold",
-            "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER": "clang",
-            "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_RUSTFLAGS": "-C link-arg=-fuse-ld=/usr/lib/sdk/rust-stable/bin/mold"
+    "env": {
+      "RUST_BACKTRACE": "1",
+      "RUST_LOG": "hgui-rust=debug"
+    }
+  },
+  "cleanup": [
+    "/include",
+    "/lib/pkgconfig",
+    "/man",
+    "/share/doc",
+    "/share/gtk-doc",
+    "/share/man",
+    "/share/pkgconfig",
+    "*.la",
+    "*.a"
+  ],
+  "modules": [
+    {
+      "name": "blueprint-compiler",
+      "buildsystem": "meson",
+      "cleanup": [
+        "*"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://gitlab.gnome.org/jwestman/blueprint-compiler.git",
+          "tag": "v0.18.0"
         }
+      ]
     },
-    "cleanup" : [
-        "/include",
-        "/lib/pkgconfig",
-        "/man",
-        "/share/doc",
-        "/share/gtk-doc",
-        "/share/man",
-        "/share/pkgconfig",
-        "*.la",
-        "*.a"
-    ],
-    "modules" : [
+    {
+      "name": "hgui-rust",
+      "builddir": true,
+      "buildsystem": "meson",
+      "config-opts": [
+        "-Dbuildtype=release"
+      ],
+      "sources": [
         {
-          "name": "blueprint-compiler",
-          "buildsystem": "meson",
-          "cleanup": ["*"],
-          "sources": [
-            {
-              "type": "git",
-              "url": "https://gitlab.gnome.org/jwestman/blueprint-compiler.git",
-              "tag": "v0.10.0"
-            }
-          ]
-        },
-        {
-            "name" : "hgui-rust",
-            "buildsystem" : "meson",
-            "config-opts": [
-                "-Dbuildtype=release"
-            ],
-            "sources" : [
-                {
-                    "type" : "git",
-                    "url" : "https://github.com/kaii-lb/hgui-rust.git",
-                    "tag" : "v1.0.5"                    
-                },
-                "generated-sources.json"
-            ]
+          "type": "git",
+          "url": "https://github.com/kaii-lb/hgui-rust",
+          "branch": "master"
         }
-    ]
+      ]
+    }
+  ]
 }
