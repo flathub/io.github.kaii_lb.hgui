@@ -60,9 +60,7 @@
           "url": "https://github.com/kaii-lb/hgui-rust",
           "tag": "v1.0.6"
         },
-        {
-          "path": "cargo-sources.json"
-        }
+        "generated-sources.json"
       ]
     }
   ]
