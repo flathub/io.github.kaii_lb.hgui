@@ -1,7 +1,7 @@
 {
   "app-id": "io.github.kaii_lb.hgui",
   "runtime": "org.gnome.Platform",
-  "runtime-version": "48",
+  "runtime-version": "49",
   "sdk": "org.gnome.Sdk",
   "sdk-extensions": [
     "org.freedesktop.Sdk.Extension.rust-stable"
@@ -18,7 +18,9 @@
     "build-args": [],
     "env": {
       "RUST_BACKTRACE": "1",
-      "RUST_LOG": "hgui-rust=debug"
+      "RUST_LOG": "hgui-rust=debug",
+      "CARGO_NET_OFFLINE": "true",
+      "CARGO_HOME": "/run/build/hgui-rust/cargo"
     }
   },
   "cleanup": [
@@ -55,12 +57,12 @@
         "-Dbuildtype=release"
       ],
       "sources": [
+        "cargo-sources.json",
         {
           "type": "git",
           "url": "https://github.com/kaii-lb/hgui-rust",
-          "tag": "v1.0.6"
-        },
-        "generated-sources.json"
+          "commit": "0fc7f9b55ac56828b4e7aa4672cb7e0d493100fc"
+        }
       ]
     }
   ]
